@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #7aa2df;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #shortened-url {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <form id="url-form">
+        <input type="text" id="url" placeholder="Enter URL" required>
+        <br>
+        <button type="button" onclick="shortenUrl()">Shorten URL</button>
+    </form>
+    <div id="shortened-url"></div>
+
+    <script>
+        function shortenUrl() {
+            var url = document.getElementById('url').value;
+            fetch('/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'url=' + encodeURIComponent(url),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('shortened-url').innerHTML = 'Shortened URL: <a href="' + data.shortened_url + '" target="_blank">' + data.shortened_url + '</a>';
+            });
+        }
+    </script>
+</body>
+</html>
